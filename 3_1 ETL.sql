@@ -1,5 +1,5 @@
-#DTIempo
-insert into DTIEMPO (
+USE sisvent_dm;
+INSERT INTO DTIEMPO (
 	Fecha,
 	Dia_cod,
     Dia_semana_desc,
@@ -22,47 +22,45 @@ FROM sisventdb.VENTA AS ve WHERE ve.Fecha_confirm IS NOT NULL
        GROUP BY DATE_FORMAT(ve.Fecha_confirm, '%Y-%m-%d')
        ORDER BY DATE_FORMAT(ve.Fecha_confirm, '%Y-%m-%d');
 
-insert into DCLIENTE (
+INSERT INTO DCLIENTE (
 	Nom_cli
 )
-SELECT  c.Nom_cli FROM sisventdb.CLIENTE as c;
+SELECT  c.Nom_cli FROM sisventdb.CLIENTE AS c;
 
-insert into DVENDEDOR (
+INSERT INTO DVENDEDOR (
 	Nom_vend
 )
-SELECT  v.Nom_vend FROM sisventdb.VENDEDOR as v;
+SELECT  v.Nom_vend FROM sisventdb.VENDEDOR AS v;
 
-insert into DPRODUCTO (  -- L
-	Cod_prod,
+INSERT INTO DPRODUCTO (  
+    Cod_prod,
     Nom_prod,
     Prec_compra,
     Prec_venta,
-	Nom_cat,
-    Nom_fabric
+    Nom_cat
 )
 SELECT
     p.Cod_prod,
-    CONCAT(p.Nom_prod, p.Presentac, ' unidad ', p.Fracciones) AS Nom_prodxx,
+    CONCAT(p.Nom_prod, p.Presentac, ' unidad ', p.Fracciones) AS Nom_prod,
     p.Prec_compra,
     p.Prec_venta,
-    c.Nom_cat,
-    f.Nom_fabric
+    c.Nom_cat
 FROM sisventdb.PRODUCTO AS p
-INNER JOIN sisventdb.CATEGORIA AS c ON p.Cat_id = c.Cat_id
-INNER JOIN sisventdb.LOTE AS l ON c.Lote_id = l.Lote_id
-INNER JOIN sisventdb.FABRICA AS f ON l.Fabric_id = f.Fabric_id;
+INNER JOIN sisventdb.CATEGORIA AS c ON p.Cat_id = c.Cat_id;
 
-insert into DTIENDA(  -- L
-	Nom_Tienda,
+
+
+
+INSERT INTO DTIENDA (
+    Nom_Tienda,
     Direccion,
     Distrito,
     Provincia,
-	Departamento,
+    Departamento
 )
 SELECT
     t.Nom_tiend AS Nom_Tienda,
-    t.Direccion AS Direccion,
-    
+    t.Direccion AS Direccion, -- Asegúrate de que el nombre de la columna sea correcto
     di.Nom_dist AS Distrito,
     prov.Nom_prov AS Provincia,
     de.Nom_dep AS Departamento
@@ -72,16 +70,15 @@ INNER JOIN sisventdb.PROVINCIA AS prov ON di.Prov_id = prov.Prov_id
 INNER JOIN sisventdb.DEPARTAMENTO AS de ON prov.Dep_id = de.Dep_id;
 
 
-insert into DMETODPAGO(  
+INSERT INTO DMETODPAGO(  
 	Metodo_de_Pago,
     Organizacion
 )
 SELECT 
 M.Nom_pago AS Metodo_de_Pago, 
 MT.Nom_mpt AS Organizacion
-FROM METODPAGO M
-INNER JOIN MP_Tipo MT ON M.Mpago_id = MT.Mpago_id;
-
+FROM sisventdb.METODPAGO AS M
+INNER JOIN sisventdb.MP_Tipo AS MT ON M.Mpago_id = MT.Mpago_id;
 
 
 

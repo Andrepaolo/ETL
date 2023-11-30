@@ -1,12 +1,11 @@
 USE sisvent_dm;
 CREATE TABLE IF NOT EXISTS DPRODUCTO (
 	DProd_id		INT				AUTO_INCREMENT,
-	Cod_prod		VARCHAR(100)	NULL,
+    Cod_prod		VARCHAR(100)	NULL,
     Nom_prod		VARCHAR(100)	NULL,
     Prec_compra		DECIMAL(9,2)	NULL,
     Prec_venta		DECIMAL(9,2)	NULL,
-	Nom_cat			VARCHAR(100)	NULL,
-    Nom_fabric		VARCHAR(100)	NULL,
+    Nom_cat			VARCHAR(100)	NULL,
     PRIMARY KEY (DProd_id)
 );
 CREATE TABLE IF NOT EXISTS DTIEMPO (
@@ -23,6 +22,7 @@ CREATE TABLE IF NOT EXISTS DTIEMPO (
 );
 CREATE TABLE IF NOT EXISTS DTIENDA(
 	DTie_id 		INT			AUTO_INCREMENT,
+	Direccion 	VARCHAR(20) NULL,
 	Nom_Tienda VARCHAR(20) NULL,
 	Distrito		VARCHAR(20) NULL,
 	Provincia   	VARCHAR(20) NULL,
@@ -45,7 +45,6 @@ CREATE TABLE IF NOT EXISTS DMETODPAGO (
 	Organizacion	VARCHAR(20)	NOT NULL,
 	PRIMARY KEY (DMp_id)               
 );
-
 CREATE TABLE IF NOT EXISTS H_VENTA (
     DTiem_id			INT			NOT NULL,
     DTie_id 			INT			NOT NULL,		

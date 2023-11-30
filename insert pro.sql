@@ -3006,7 +3006,7 @@ INSERT INTO MP_Tipo (Mptipo_id, Nom_mpt, Mpago_id) VALUES
 (2, 'Interbank', 2),
 (3, 'Scotiabank', 2),
 (4, 'BBVA', 2),
-(5, 'BanBif', 2);
+(5, 'BanBif', 2),
 (6, 'Yape', 3),
 (7, 'Plin', 3),
 (8, 'Agora', 3);
