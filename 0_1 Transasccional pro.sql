@@ -1,0 +1,117 @@
+USE sisventdb;
+
+CREATE TABLE IF NOT EXISTS DEPARTAMENTO(
+	Dep_id		INT				NOT NULL,
+	Nom_dep		VARCHAR(100)	NOT NULL,
+	PRIMARY KEY (Dep_id)               
+);
+
+CREATE TABLE IF NOT EXISTS PROVINCIA (
+	Prov_id		INT				NOT NULL,
+	Nom_prov	VARCHAR(100)	NOT NULL,
+    Dep_id      INT				NOT NULL,
+    FOREIGN KEY (Dep_id) REFERENCES DEPARTAMENTO (Dep_id) 
+    ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY (Prov_id)               
+);
+CREATE TABLE IF NOT EXISTS DISTRITO (
+	Dist_id		INT				NOT NULL,
+	Nom_dist	VARCHAR(100)	NOT NULL,
+    Prov_id      INT				NOT NULL,
+    FOREIGN KEY (Prov_id) REFERENCES PROVINCIA (Prov_id) 
+    ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY (Dist_id)               
+);
+
+CREATE TABLE IF NOT EXISTS TIENDA (
+	Tiend_id		INT				NOT NULL,
+	Nom_tiend		VARCHAR(100)	NOT NULL,
+    Direccion       VARCHAR(100)	NOT NULL,
+	Dist_id		INT			NOT NULL,
+    FOREIGN KEY (Dist_id) REFERENCES DISTRITO (Dist_id) 
+    ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (Tiend_id)
+);
+
+CREATE TABLE IF NOT EXISTS CATEGORIA (
+	Cat_id		INT				NOT NULL,
+	Nom_cat		VARCHAR(100)	NOT NULL,
+	
+    PRIMARY KEY (Cat_id)
+);
+
+CREATE TABLE IF NOT EXISTS PRODUCTO (
+	Prod_id		INT				NOT NULL,
+	Cod_prod		VARCHAR(100)	NOT NULL,
+    Nom_prod		VARCHAR(100)	NOT NULL,
+    Peso		VARCHAR(100)	 NULL,
+    Presentac		VARCHAR(100)	 NULL,
+    Fracciones		VARCHAR(100)	 NULL,
+    Prec_compra		DECIMAL(9,2)	 NULL,
+    Prec_venta		DECIMAL(9,2)	 NULL,
+	Cat_id		INT			NOT NULL,
+    FOREIGN KEY (Cat_id) REFERENCES CATEGORIA (Cat_id) 
+    ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (Prod_id)
+);
+
+CREATE TABLE IF NOT EXISTS CLIENTE (
+	Cli_id		INT				NOT NULL,
+	Nom_cli		VARCHAR(100)	NOT NULL,
+	PRIMARY KEY (Cli_id)               
+);
+CREATE TABLE IF NOT EXISTS VENDEDOR (
+	Vend_id		INT				NOT NULL,
+	Nom_vend	VARCHAR(100)	NOT NULL,
+	PRIMARY KEY (Vend_id)               
+);
+CREATE TABLE IF NOT EXISTS METODPAGO (
+	Mpago_id		INT				NOT NULL,
+	Nom_pago	VARCHAR(100)	NOT NULL,
+	
+	PRIMARY KEY (Mpago_id)               
+);
+CREATE TABLE IF NOT EXISTS MP_Tipo (
+	Mptipo_id		INT				NOT NULL,
+	Nom_mpt	VARCHAR(20)	NOT NULL,
+    Mpago_id		INT			 NOT NULL,
+     FOREIGN KEY (Mpago_id) REFERENCES METODPAGO (Mpago_id) 
+    ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY (Mptipo_id)               
+);
+
+CREATE TABLE IF NOT EXISTS VENTA (
+	Vta_id			INT			NOT NULL,
+	Fecha_crea		TIMESTAMP 	NOT NULL,
+    Fecha_confirm	TIMESTAMP  	 NULL, 
+    Fecha_envio		TIMESTAMP 	 NULL,
+    Fecha_entrega	TIMESTAMP 	 NULL,
+    Fecha_pago		TIMESTAMP 	 NULL,
+    Estado			VARCHAR(20)	 NULL,
+	Cli_id			INT			 NOT NULL,
+  
+    Vend_id			INT			 NULL,
+    Mpago_id		INT			 NOT NULL,
+    FOREIGN KEY (Cli_id) REFERENCES CLIENTE (Cli_id) 
+    ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (Vend_id) REFERENCES VENDEDOR (Vend_id) 
+    ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (Mpago_id) REFERENCES METODPAGO (Mpago_id) 
+    ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (Vta_id)
+);
+
+CREATE TABLE IF NOT EXISTS VENTA_DET(
+	Vta_id			INT			NOT NULL,
+    Prod_id			INT			NOT NULL,
+	Cantidad		INT	NOT NULL,
+    Prec_compra_un	DECIMAL(9,2) 	NULL,
+    Prec_venta_un	DECIMAL(9,2)	NOT NULL,
+    Total_desc_un	DECIMAL(9,2)	NULL,
+    Igv_un			DECIMAL(9,2)	NULL,
+    FOREIGN KEY (Vta_id) REFERENCES VENTA (Vta_id) 
+    ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (Prod_id) REFERENCES PRODUCTO (Prod_id) 
+    ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (Vta_id, Prod_id)
+);
